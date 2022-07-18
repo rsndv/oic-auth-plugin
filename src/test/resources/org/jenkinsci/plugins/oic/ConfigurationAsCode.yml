@@ -16,3 +16,4 @@ jenkins:
       scopes: scopes
       tokenServerUrl: http://localhost
       userNameField: userNameField
+      extractUserNameFromEmail: false

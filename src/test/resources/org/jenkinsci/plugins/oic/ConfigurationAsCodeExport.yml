@@ -5,6 +5,7 @@ emailFieldName: "emailFieldName"
 escapeHatchEnabled: true
 escapeHatchGroup: "escapeHatchGroup"
 escapeHatchUsername: "escapeHatchUsername"
+extractUserNameFromEmail: false
 fullNameFieldName: "fullNameFieldName"
 groupsFieldName: "groupsFieldName"
 logoutFromOpenidProvider: true
