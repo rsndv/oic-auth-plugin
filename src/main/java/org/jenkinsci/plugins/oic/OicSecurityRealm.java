@@ -204,6 +204,7 @@ public class OicSecurityRealm extends SecurityRealm implements Serializable {
 
     private String userNameField = "sub";
     private transient Expression<Object> userNameFieldExpr = null;
+    private boolean extractUserNameFromEmail = false;
     private String tokenFieldToCheckKey = null;
     private transient Expression<Object> tokenFieldToCheckExpr = null;
     private String tokenFieldToCheckValue = null;
@@ -431,6 +432,10 @@ public class OicSecurityRealm extends SecurityRealm implements Serializable {
 
     public String getUserNameField() {
         return userNameField;
+    }
+
+    public boolean isExtractUserNameFromEmail() {
+        return extractUserNameFromEmail;
     }
 
     @Restricted(NoExternalUse.class)
@@ -746,6 +751,11 @@ public class OicSecurityRealm extends SecurityRealm implements Serializable {
     public void setUserNameField(String userNameField) {
         this.userNameField = Util.fixNull(Util.fixEmptyAndTrim(userNameField), "sub");
         this.userNameFieldExpr = compileJMESPath(this.userNameField, "user name field");
+    }
+
+    @DataBoundSetter
+    public void setExtractUserNameFromEmail(boolean extractUserNameFromEmail) {
+        this.extractUserNameFromEmail = extractUserNameFromEmail;
     }
 
     @DataBoundSetter
@@ -1363,6 +1373,16 @@ public class OicSecurityRealm extends SecurityRealm implements Serializable {
             RefreshToken refreshToken = profile.getRefreshToken();
 
             String username = determineStringField(userNameFieldExpr, idToken, profile.getAttributes());
+
+            // Extract username from email if configured
+            if (extractUserNameFromEmail && emailFieldExpr != null) {
+                String email = determineStringField(emailFieldExpr, idToken, profile.getAttributes());
+                if (email != null && email.contains("@")) {
+                    String[] emailSplit = email.split("@");
+                    username = emailSplit[0];
+                }
+            }
+
             if (failedCheckOfTokenField(idToken)) {
                 throw new FailedCheckOfTokenException(client.getConfiguration().findLogoutUrl());
             }
@@ -1506,6 +1526,16 @@ public class OicSecurityRealm extends SecurityRealm implements Serializable {
                     profile.getRefreshToken(), new RefreshToken(credentials.getRefreshToken()));
 
             String username = determineStringField(userNameFieldExpr, idToken, profile.getAttributes());
+
+            // Extract username from email if configured
+            if (extractUserNameFromEmail && emailFieldExpr != null) {
+                String email = determineStringField(emailFieldExpr, idToken, profile.getAttributes());
+                if (email != null && email.contains("@")) {
+                    String[] emailSplit = email.split("@");
+                    username = emailSplit[0];
+                }
+            }
+
             if (!User.idStrategy().equals(expectedUsername, username)) {
                 httpResponse.sendError(
                         HttpServletResponse.SC_UNAUTHORIZED, "User name was not the same after refresh request");

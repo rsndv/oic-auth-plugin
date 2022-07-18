@@ -55,6 +55,7 @@ public class TestRealm extends OicSecurityRealm {
         public String escapeHatchGroup = null;
         public boolean automanualconfigure = false;
         public boolean disableTokenValidation = true; // opt in for some specific tests
+        public boolean extractUserNameFromEmail = false;
         public IdStrategy userIdStrategy;
         public IdStrategy groupIdStrategy;
 
@@ -163,6 +164,11 @@ public class TestRealm extends OicSecurityRealm {
             return this;
         }
 
+        public Builder WithExtractUserNameFromEmail(boolean extractUserNameFromEmail) {
+            this.extractUserNameFromEmail = extractUserNameFromEmail;
+            return this;
+        }
+
         public TestRealm build() throws Exception {
             return new TestRealm(this);
         }
@@ -202,6 +208,7 @@ public class TestRealm extends OicSecurityRealm {
                 builder.userIdStrategy,
                 builder.groupIdStrategy);
         this.setUserNameField(builder.userNameField);
+        this.setExtractUserNameFromEmail(builder.extractUserNameFromEmail);
         this.setTokenFieldToCheckKey(builder.tokenFieldToCheckKey);
         this.setTokenFieldToCheckValue(builder.tokenFieldToCheckValue);
         this.setFullNameFieldName(builder.fullNameFieldName);

@@ -21,6 +21,7 @@ jenkins:
       groupsFieldName: groupsFieldName
       logoutFromOpenidProvider: true
       userNameField: userNameField
+      extractUserNameFromEmail: false
       rootURLFromRequest: true
       sendScopesInTokenRequest: true
       pkceEnabled: true

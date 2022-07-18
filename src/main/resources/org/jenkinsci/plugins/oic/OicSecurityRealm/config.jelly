@@ -16,6 +16,9 @@
       <f:entry title="${%UsernameFieldName}" field="userNameField">
         <f:textbox/>
       </f:entry>
+      <f:entry title="${%ExtractUsernameFromEmail}" field="extractUserNameFromEmail">
+        <f:checkbox/>
+      </f:entry>
       <f:entry>
         <f:dropdownDescriptorSelector title="${%UsernameIdStrategy}" field="userIdStrategy" default="${descriptor.defaultUsernameIdStrategy()}" descriptors="${descriptor.idStrategyDescriptors}"/>
       </f:entry>
