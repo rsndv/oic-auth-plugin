@@ -21,3 +21,4 @@ jenkins:
       sendScopesInTokenRequest: true
       pkceEnabled: true
       nonceDisabled: true
+      extractUserNameFromEmail: false

@@ -137,6 +137,7 @@ public class OicSecurityRealm extends SecurityRealm {
     private String authorizationServerUrl = null;
     private String userInfoServerUrl = null;
     private String userNameField = "sub";
+    private final boolean extractUserNameFromEmail;
     private String tokenFieldToCheckKey = null;
     private String tokenFieldToCheckValue = null;
     private String fullNameFieldName = null;
@@ -198,7 +199,7 @@ public class OicSecurityRealm extends SecurityRealm {
      */
     @Deprecated
     public OicSecurityRealm(String clientId, String clientSecret, String wellKnownOpenIDConfigurationUrl, String tokenServerUrl, String tokenAuthMethod, String authorizationServerUrl,
-                            String userInfoServerUrl, String userNameField, String tokenFieldToCheckKey, String tokenFieldToCheckValue,
+                            String userInfoServerUrl, String userNameField, boolean extractUserNameFromEmail, String tokenFieldToCheckKey, String tokenFieldToCheckValue,
                             String fullNameFieldName, String emailFieldName, String scopes, String groupsFieldName, Boolean disableSslVerification,
                             Boolean logoutFromOpenidProvider, String endSessionEndpoint, String postLogoutRedirectUrl, Boolean escapeHatchEnabled,
                             String escapeHatchUsername, String escapeHatchSecret, String escapeHatchGroup, String automanualconfigure) throws IOException {
@@ -226,6 +227,9 @@ public class OicSecurityRealm extends SecurityRealm {
             this.automanualconfigure = "manual";
             this.wellKnownOpenIDConfigurationUrl = null;  // Remove the autoconfig URL
         }
+
+        this.userNameField = Util.fixEmpty(userNameField) == null ? "sub" : userNameField;
+        this.extractUserNameFromEmail = extractUserNameFromEmail;
 
         this.tokenFieldToCheckKey = Util.fixEmpty(tokenFieldToCheckKey);
         this.tokenFieldToCheckValue = Util.fixEmpty(tokenFieldToCheckValue);
@@ -324,6 +328,10 @@ public class OicSecurityRealm extends SecurityRealm {
 
     public String getUserNameField() {
         return userNameField;
+    }
+
+    public boolean getExtractUserNameFromEmail() {
+        return extractUserNameFromEmail;
     }
 
     public String getTokenFieldToCheckKey() {
@@ -796,6 +804,13 @@ public class OicSecurityRealm extends SecurityRealm {
                     GenericJson userInfo = null;
                     if (!Strings.isNullOrEmpty(userInfoServerUrl)) {
                         userInfo = getUserInfo(flow, response.getAccessToken());
+			if(extractUserNameFromEmail) {
+                              String email = (String) getField(userInfo, emailFieldName);
+                              String[] emailSplit = email.split("@");
+                              username = emailSplit[0];
+                          } else{
+                              username = getField(userInfo, userNameField);
+                          }
                     }
 
                     String username = determineStringField(userNameField, idToken, userInfo);

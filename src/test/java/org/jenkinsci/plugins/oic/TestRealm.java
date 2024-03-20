@@ -89,6 +89,7 @@ public class TestRealm extends OicSecurityRealm {
              builder.userInfoServerUrl,
              builder.userNameField,
              builder.tokenFieldToCheckKey,
+	     builder.extractUserNameFromEmail,
              builder.tokenFieldToCheckValue,
              builder.fullNameFieldName,
              builder.emailFieldName,

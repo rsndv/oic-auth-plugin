@@ -62,6 +62,9 @@
     <f:entry title="${%User name field name}" field="userNameField">
       <f:textbox/>
     </f:entry>
+    <f:entry title="${%Extract user name from e-maile}" field="extractUserNameFromEmail">
+      <f:checkbox/>
+    </f:entry>
     <f:entry title="${%Full name field name}" field="fullNameFieldName">
       <f:textbox/>
     </f:entry>
