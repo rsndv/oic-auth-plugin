@@ -18,7 +18,7 @@
   </properties>
 
   <artifactId>oic-auth</artifactId>
-  <version>${revision}.${changelist}</version>
+  <version>4.999999-SNAPSHOT</version>
   <packaging>hpi</packaging>
 
   <scm>
