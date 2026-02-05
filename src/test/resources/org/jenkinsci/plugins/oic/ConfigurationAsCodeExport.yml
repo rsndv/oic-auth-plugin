@@ -4,7 +4,6 @@ emailFieldName: "emailFieldName"
 escapeHatchEnabled: true
 escapeHatchGroup: "escapeHatchGroup"
 escapeHatchUsername: "escapeHatchUsername"
-extractUserNameFromEmail: false
 fullNameFieldName: "fullNameFieldName"
 groupIdStrategy: "caseInsensitive"
 groupsFieldName: "groupsFieldName"
