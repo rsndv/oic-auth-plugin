@@ -1,8 +1,8 @@
 package org.jenkinsci.plugins.oic;
 
 import hudson.ProxyConfiguration;
+import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.UnknownHostException;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -28,9 +28,9 @@ class ProxyAwareResourceRetrieverTest {
 
         ProxyAwareResourceRetriever retreiver = ProxyAwareResourceRetriever.createProxyAwareResourceRetriver(false);
         HttpURLConnection conn = retreiver.openHTTPConnection(r.getURL());
-        // should attempt to connect to the proxy which is ignored.invalid which can not be resolved and hence throw an
-        // UnknownHostException
-        assertThrows(UnknownHostException.class, conn::getContent);
+        // should attempt to connect to the proxy which is ignored.invalid which can not be resolved
+        // This throws UnknownHostException in some environments and ConnectException in others (e.g., Docker)
+        assertThrows(IOException.class, conn::getContent);
     }
 
     @Test
